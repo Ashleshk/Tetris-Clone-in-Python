@@ -117,3 +117,31 @@ def main(stdscr):
     ui.mainloop()
 
 
+def simple_wrapper(function):
+    """Like curses.wrapper(), but I know how to use this."""
+    stdscr = None
+
+    try:
+        stdscr = curses.initscr()
+        curses.noecho()
+        curses.cbreak()
+        curses.curs_set(0)
+        stdscr.keypad(1)
+        curses.start_color()
+        function(stdscr)
+
+    except KeyboardInterrupt:
+        # this and other sys.exit messages will be printed after the
+        # finally thing below runs
+        sys.exit("Goodbye!")
+
+    finally:
+        if stdscr is not None:
+            curses.nocbreak()
+            curses.echo()
+            curses.curs_set(1)
+            curses.endwin()
+
+
+if __name__ == '__main__':
+    simple_wrapper(main)
