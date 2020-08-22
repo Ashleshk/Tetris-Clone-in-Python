@@ -7,9 +7,4 @@ if platform.platform() == 'Windows':
 else:
     python = 'python3'
 
-sys.stderr.write("""\
-Usage:
-  {0} -m tetris_clone.gui   # run the game with a tkinter GUI
-  {0} -m tetris_clone.cli   # run the game with a curses interface
-""".format(python))
-sys.exit(2)
+
