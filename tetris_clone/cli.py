@@ -83,4 +83,26 @@ class CursesUI:
             return
         self.draw()
 
-    
+    def mainloop(self):
+        last_do_something_time = time.time()
+
+        while True:
+            key = self.window.getch()
+            if key != curses.ERR:
+                self._handle_key(key)
+
+            if time.time() - last_do_something_time > self.game.delay / 1000:
+                last_do_something_time = time.time()
+                self.game.do_something()
+                self.draw()
+                if self.game.game_over():
+                    # this goes to stderr and not stdout, we can't print
+                    # here but sys.exit prints later (see comments in
+                    # simple_wrapper). this is simpler than using atexit
+                    sys.exit("Game Over :(\n"
+                             "You ended up on level %d with score %d."
+                             % (self.game.level, self.game.score))
+
+            time.sleep(0.01)
+
+
