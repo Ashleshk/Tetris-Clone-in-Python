@@ -106,3 +106,14 @@ class CursesUI:
             time.sleep(0.01)
 
 
+def main(stdscr):
+    # this reuses COLOR_ constants as color pair numbers, it works
+    # and makes the code a bit simpler
+    for color_number in COLORS.values():
+        curses.init_pair(color_number, curses.COLOR_RED, color_number)
+
+    game = core.Game()
+    ui = CursesUI(stdscr, game)
+    ui.mainloop()
+
+
